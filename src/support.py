@@ -216,6 +216,7 @@ def readFrameJSON(file_path, frame_n=0):
 
 def readAllFramesDATA(file_path):
     keypoints_vec = []
+    angles_vec = []
     with open(file_path, 'r') as f:
         for i, line in enumerate(f):
             if i==0:
@@ -223,14 +224,19 @@ def readAllFramesDATA(file_path):
             else:
                 data = json.loads(line)
                 keypoints_vec.append(data["keypoints"])
+                angles_vec.append(data["angles"])
     keypoints_vec = np.array(keypoints_vec).astype(float)
-    return metadata, keypoints_vec
+    angles_vec = np.array(angles_vec).astype(float)
+    return metadata, keypoints_vec, angles_vec
 
-def getFrame(video_name, n, allvid=False):
-    if allvid:
-        input_source = allvid_dir + video_name
+def getFrame(video_name, n, allvid=False, input_path=False):
+    if input_path:
+        input_source = video_name
     else:
-        input_source = videos_dir + video_name
+        if allvid:
+            input_source = allvid_dir + video_name
+        else:
+            input_source = videos_dir + video_name
     
     cap = cv2.VideoCapture(input_source)
     cap.set(cv2.CAP_PROP_POS_FRAMES, n)

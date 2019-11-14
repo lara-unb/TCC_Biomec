@@ -104,10 +104,15 @@ def poseDATAtoFrame(frame, pose_keypoints, persons, joint_names, pairs_names, th
         return frame
     return frame
 
-def showFrame(frame):
-    plt.figure(figsize=[9,6])
+def showFrame(frame, figsize=[9,6], savefig=False, figname=None):
+    if figsize == None:
+        plt.figure()
+    else:
+        plt.figure(figsize=figsize)
     plt.imshow(frame[:,:,[2,1,0]])
     plt.axis("off")
+    if savefig:
+        plt.savefig("../images/" + figname + ".png", bbox_inches="tight", pad_inches = 0)
     plt.show()
 
 def poseDATAtoCI(frame, keypoints_vector, thickness=3):
