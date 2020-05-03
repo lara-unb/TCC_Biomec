@@ -143,11 +143,15 @@ def inverseKinematicsRowing(keypoints):
             A = keypoints[i-1]
             O = keypoints[i]
             B = keypoints[i+1]
-            
-        angles[i] = getAngleLimited(A, B, O)
-        if i==3:
-            if A[0] > B[0]:
-                angles[i] = -angles[i]
+        
+        kp = np.array([A,B,O])
+        if (0 in kp) or (-1 in kp): 
+            angles[i] = np.nan
+        else:
+            angles[i] = getAngleLimited(A, B, O)
+            if i==3:
+                if A[0] > B[0]:
+                    angles[i] = -angles[i]
     return angles
 
 def fowardKinematicsRowing(root_xy, angles, distances, orientation = "Sagittal Left"):

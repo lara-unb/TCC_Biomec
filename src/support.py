@@ -10,6 +10,17 @@ from PyQt5 import QtGui
 from PyQt5.QtWidgets import QWidget, QFileDialog
 from PyQt5.QtWidgets import QApplication
 from parameters import *
+from kinematics import inverseKinematicsRowing
+
+def readFileDialog(title, file_type="All Files"):
+    app = QApplication(sys.argv)
+    qfd = QFileDialog()
+    if file_type == "All Files":
+        type_filter = "All Files (*)"
+    else:
+        type_filter = file_type + " (*." + file_type + ")"
+    file_path, _ = QFileDialog.getOpenFileName(qfd, title, "", type_filter)
+    return file_path
 
 class GetFileToSave(QWidget):
 
@@ -224,7 +235,15 @@ def readAllFramesDATA(file_path):
             else:
                 data = json.loads(line)
                 keypoints_vec.append(data["keypoints"])
-                angles_vec.append(data["angles"])
+                try:
+                    angles_vec.append(data["angles"])
+                except:
+                    try:
+                        data["angles"] = inverseKinematicsRowing(data["keypoints"])
+                        angles_vec.append(data["angles"])
+                    except Exception as e:
+                        print("Could not get angles")
+                        raise e
     keypoints_vec = np.array(keypoints_vec).astype(float)
     angles_vec = np.array(angles_vec).astype(float)
     return metadata, keypoints_vec, angles_vec
