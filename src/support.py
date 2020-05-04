@@ -11,12 +11,12 @@ from PyQt5.QtWidgets import QApplication
 from parameters import *
 from kinematics import inverseKinematicsRowing
 
-def saveDATAtoFile(file_path, file_data):
-    writeToDATA(file_path, file_data["metadata"], write_mode='w')
-    for i in range(len(file_data["keypoints"])):
-        pose_keypoints = file_data["keypoints"]
+def saveDATAtoFile(file_path, data):
+    writeToDATA(file_path, data["metadata"], write_mode='w')
+    for i in range(len(data["keypoints"])):
+        pose_keypoints = data["keypoints"][i]
         try:
-            angles = file_data["angles"][i]
+            angles = data["angles"][i]
         except:
             angles = []
         file_data = {

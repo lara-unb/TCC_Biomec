@@ -42,4 +42,5 @@ def processing_function(data):
 	for i in range(keypoints_vec.shape[1]):
 		measurements = np.copy(keypoints_vec[:, i])
 		keypoints_vec[:, i, 0], keypoints_vec[:, i, 1] = kalmanFilter(measurements)
-	return keypoints_vec
+	data["keypoints"] = np.array(keypoints_vec)
+	return data

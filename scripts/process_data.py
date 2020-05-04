@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from sys import platform
 import argparse
 sys.path.append("../src")
-from support import readAllFramesDATA, saveFileDialog, readFileDialog, saveDATAtoFile
+from support import parse_data_file, saveFileDialog, readFileDialog, saveDATAtoFile
 from preprocessing import fillwInterp
 from visualizations import keypointsToVideo
 from kinematics import getRowingAngles
@@ -29,7 +29,7 @@ def test_processing(data_path, video_path, data_out_path, video_out_path, interp
     # Apply processing function
     if process:
         data = processing_function(data)
-    
+
     if save_data:
         saveDATAtoFile(data_out_path, data)
     
