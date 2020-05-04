@@ -125,6 +125,13 @@ def showJointsPlot(keypoints_xy, joint_pairs):
     plt.grid()
     plt.show()
 
+def getRowingAngles(keypoints_vec):
+    angles_vec = []
+    for i in range(len(keypoints_vec)):
+        angles_vec.append(inverseKinematicsRowing(keypoints_vec[i]))
+    angles_vec = np.array(angles_vec)
+    return angles_vec
+
 def inverseKinematicsRowing(keypoints):
     """ Expected joint order
     if orientation == "Sagittal Right":

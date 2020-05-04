@@ -7,8 +7,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from support import *
 from detection import *
-from preprocessing_OP import organizeBiggestPerson, selectJoints, fillwInterp
-from visualizations_OP import poseDATAtoFrame, rectAreatoFrame, showFrame
+from preprocessing import organizeBiggestPerson, selectJoints, fillwInterp
+from visualizations import poseDATAtoFrame, rectAreatoFrame, showFrame
 from parameters import *
 from kinematics import *
 from sys import platform

@@ -12,7 +12,21 @@ from PyQt5.QtWidgets import QApplication
 from parameters import *
 from kinematics import inverseKinematicsRowing
 
-def readFileDialog(title, file_type="All Files"):
+def saveDATAtoFile(file_path, file_metadata, keypoints_vec, angles_vec=[]):
+    writeToDATA(file_path, file_metadata, write_mode='w')
+    for i in range(len(keypoints_vec)):
+        pose_keypoints = keypoints_vec[i]
+        try:
+            angles = angles_vec[i]
+        except:
+            angles = []
+        file_data = {
+                    'keypoints': pose_keypoints.tolist(),
+                    'angles': angles.tolist()
+                    }
+        writeToDATA(file_path, file_data, write_mode='a')
+
+def readFileDialog(title="Open File", file_type="All Files"):
     app = QApplication(sys.argv)
     qfd = QFileDialog()
     if file_type == "All Files":
@@ -21,6 +35,18 @@ def readFileDialog(title, file_type="All Files"):
         type_filter = file_type + " (*." + file_type + ")"
     file_path, _ = QFileDialog.getOpenFileName(qfd, title, "", type_filter)
     return file_path
+
+def readFolderDialog(title="Open Folder"):
+    app = QApplication(sys.argv)
+    qfd = QFileDialog()
+    folder_path = QFileDialog.getExistingDirectory(qfd, title)
+    return folder_path
+
+def saveFileDialog(title="Save File"):
+    app = QApplication(sys.argv)
+    qfd = QFileDialog()
+    file_path = QFileDialog.getSaveFileName(qfd, title)
+    return file_path[0]
 
 class GetFileToSave(QWidget):
 
@@ -225,7 +251,24 @@ def readFrameJSON(file_path, frame_n=0):
                 data = json.loads(line)
     return metadata, data
 
-def readAllFramesDATA(file_path):
+def parse_pickle_file(file_path):
+    data = {}
+    # Load data
+    with open(file_path, 'rb') as f:
+        try:
+            while True:
+                data.update({pickle.load(f): pickle.load(f)})
+    
+        except EOFError:
+            pass
+    
+    var_names = []
+    for k, v in data.items():
+        var_names.append(k)
+
+    return data, var_names
+
+def parse_data_file(file_path):
     keypoints_vec = []
     angles_vec = []
     with open(file_path, 'r') as f:
@@ -240,10 +283,27 @@ def readAllFramesDATA(file_path):
                 except:
                     try:
                         data["angles"] = inverseKinematicsRowing(data["keypoints"])
-                        angles_vec.append(data["angles"])
                     except Exception as e:
+                        data["angles"] = []
                         print("Could not get angles")
-                        raise e
+    data["keypoints"] = np.array(data["keypoints"]).astype(float)
+    data["angles"] = np.array(data["angles"]).astype(float)
+    return data, metadata
+
+def readAllFramesDATA(file_path):
+    keypoints_vec = []
+    angles_vec = []
+    with open(file_path, 'r') as f:
+        for i, line in enumerate(f):
+            if i==0:
+                metadata = json.loads(line)
+            else:
+                data = json.loads(line)
+                keypoints_vec.append(data["keypoints"])
+                try:
+                    angles_vec.append(data["angles"])
+                except:
+                    angles = []
     keypoints_vec = np.array(keypoints_vec).astype(float)
     angles_vec = np.array(angles_vec).astype(float)
     return metadata, keypoints_vec, angles_vec

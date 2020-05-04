@@ -4,7 +4,6 @@ import time
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from pykalman import KalmanFilter
 from numpy import ma
 import json
 from support import *
@@ -30,23 +29,25 @@ colors = [[0,100,255], [0,100,255], [0,255,255], [0,100,255], [0,255,255], [0,10
          [0,0,255], [255,0,0], [200,200,0], [255,0,0], [200,200,0], 
          [0,0,0], [0,0,0], [0,255,0], [0,255,0]]
 
-def organizeBiggestPerson(personwise_keypoints, keypoints_list):
-    biggest_dict = {}
-    unsorted_keypoints = -1*np.ones([len(personwise_keypoints), n_points, 2])
-    sorted_keypoints = -1*np.ones([len(personwise_keypoints), n_points, 2])
-    for n in range(len(personwise_keypoints)):
-        for i in range(n_points):
-            index = personwise_keypoints[n][i]
-            if index == -1:
-                continue
-            unsorted_keypoints[n][i] = keypoints_list[int(personwise_keypoints[n][i])][0:2]
-        biggest_dict[rectangularArea(unsorted_keypoints[n])] = n
-    biggest_values = sorted(biggest_dict, reverse=True)
-    n = 0
-    for i in biggest_values:
-        index = biggest_dict[int(i)]
-        sorted_keypoints[n] = unsorted_keypoints[index]
-        n += 1
+def organizeBiggestPerson(pose_keypoints):
+    try:
+        biggest_dict = {}
+        sorted_keypoints = np.zeros(pose_keypoints.shape)
+        # print(pose_keypoints)
+        for n in range(pose_keypoints.shape[0]):
+            area = rectangularArea(pose_keypoints[n,:,:2])
+            # print(area)
+            biggest_dict[area] = n
+        # print("dict: {}".format(biggest_dict))
+        biggest_values = sorted(biggest_dict, reverse=True) 
+        # print("values: {}".format(biggest_values))
+        n = 0
+        for i in biggest_values:
+            index = int(biggest_dict[i])
+            sorted_keypoints[n] = pose_keypoints[index]
+            n += 1
+    except:
+        return pose_keypoints
     return sorted_keypoints
 
 def fillwLast(keypoints_vector):
@@ -106,7 +107,7 @@ def fillwKalman(keypoints_vector, t):
     return keypoints_vector
 
 def missingDataInterpolation(X, interp='cubic'):
-    X = np.where(X==-1, np.nan, X)
+    X = np.where(X==0, np.nan, X)
     X = pd.Series(X)
     X_out = X.interpolate(limit_direction='both', kind=interp)
     return X_out
@@ -116,6 +117,15 @@ def fillwInterp(keypoints_vector):
         keypoints_vector[:,i,0] = missingDataInterpolation(keypoints_vector[:, i, 0])
         keypoints_vector[:,i,1] = missingDataInterpolation(keypoints_vector[:, i, 1])
     return keypoints_vector.astype(int)
+
+def selectJoints(pose_keypoints, old_joints, new_joints):
+    try:
+        out_keypoints = np.zeros([pose_keypoints.shape[0], len(new_joints), pose_keypoints.shape[2]])
+        for joint in new_joints:
+            out_keypoints[:, new_joints.index(joint), :] = pose_keypoints[:, old_joints.index(joint), :]
+    except:
+        return pose_keypoints
+    return out_keypoints
 
 def removePairs(main_keypoints, joint_pairs):
     out_keypoints = -1*np.ones(main_keypoints.shape)
