@@ -3,7 +3,6 @@ import time
 import numpy as np
 import json
 import math
-import tkinter as tk
 import sys
 import os
 from PyQt5 import QtGui

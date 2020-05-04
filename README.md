@@ -22,10 +22,18 @@ Then, using those joint coordinates acquired, angles are deduced:
   <img src="https://github.com/lara-unb/ema_motion_analysis/blob/master/images/ang_1.png?raw=true" alt="Rowing angles calculation"/>
 </p>
 
-Finally, the velocity can be estimated by separation the x coordinate component from the hip joint coordinate, such as:
+# Dependencies
 
-<p align="center">
-  <img src="https://github.com/lara-unb/ema_motion_analysis/blob/master/images/vel.png?raw=true" alt="Rowing velocity estimation"/>
-</p>
+- Numpy (pip install numpy)
+- Matplotlib (pip install matplotlib)
+- Opencv (pip install opencv-python)
+- Pykalman (pip install pykalman)
+- PyQt5 (pip install PyQt5)
+- Openpose (see [github](https://github.com/CMU-Perceptual-Computing-Lab/openpose))
 
-The next steps are to improve the joint localization by means of a kinematic chain embedded in a Kalman filter.
+# Testing
+
+- A file structure named .DATA was created to store and manipulate keypoints and angles extracted, it based on JSON and therefor readable.
+- To get a .DATA file from a video using the Openpose Python API, run the script pyopenpose_save_data.py and select the video of interest. In the file, define the saggittal plane of the rowing position (SL: Saggittal Left, SR: Saggittal Rigth).
+- To process the data run the script process_data.py and select the .DATA file, the video used to generate the .DATA file, and their respective output destinations. The default processing is an interpolation followed by a kalman filter, applied to each joint position coordinate axis individually.
+- A video and .DATA example is provided under the examples folder.
