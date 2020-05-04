@@ -37,9 +37,8 @@ def kalmanFilter(measurements):
 	
 	return smoothed_state_means[:, 0], smoothed_state_means[:, 2]
 
-def processing_function(keypoints_vec):
-	# _, keypoints_vec = readAllFramesDATA(file_path)
-	
+def processing_function(data):
+	keypoints_vec = data["keypoints"]
 	for i in range(keypoints_vec.shape[1]):
 		measurements = np.copy(keypoints_vec[:, i])
 		keypoints_vec[:, i, 0], keypoints_vec[:, i, 1] = kalmanFilter(measurements)

@@ -17,6 +17,64 @@ colors_2 = [[0,255,0], [255,0,0], [0,0,255], [0,255,255],[255,255,0],
 data_dir = "/home/victormacedo10/0.TCC/TCC_Biomec/Data/"
 videos_dir = "/home/victormacedo10/0.TCC/TCC_Biomec/Videos/"
 
+
+def keypointsToVideo(video_path, file_metadata, keypoints_vec, video_out_path=None, 
+                    save_video=True, show_video=True, show_frame=False):
+
+    frame_width, frame_height, fps = file_metadata["frame_width"], file_metadata["frame_height"], file_metadata["fps"]
+    keypoints_names, keypoints_pairs = file_metadata["keypoints_names"], file_metadata["keypoints_pairs"]
+    cap = cv2.VideoCapture(video_path)
+
+    if save_video:
+        fourcc = cv2.VideoWriter_fourcc(*'X264')
+        vid_writer = cv2.VideoWriter(video_out_path, fourcc, fps, (frame_width,frame_height))
+
+    if(cap.isOpened() == False):
+        print("Error opening video stream or file")
+
+    for i in range(len(keypoints_vec)):
+        # Process Image
+        ret, imageToProcess = cap.read()
+        if not ret:
+            break
+
+        # Start timer
+        timer = cv2.getTickCount()
+
+        pose_keypoints = keypoints_vec[i]
+
+
+        img_out = poseDATAtoFrame(imageToProcess, pose_keypoints, 0, keypoints_names, keypoints_pairs, 
+                                    thickness=3, color = -1)
+
+        if save_video:
+            vid_writer.write(img_out)
+
+        if show_video or show_frame:
+            # Calculate Frames per second (FPS)
+            fps = cv2.getTickFrequency() / (cv2.getTickCount() - timer)
+            # Display FPS on frame
+            cv2.putText(img_out, "FPS : " + str(int(fps)), (100,50), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (50,170,50), 2)
+            
+            # Display Image
+            cv2.namedWindow('OpenPose', cv2.WINDOW_NORMAL)
+            cv2.resizeWindow('OpenPose', (frame_width, frame_height))
+            cv2.imshow("OpenPose", img_out)
+
+        if show_frame:
+            while True:
+                if(cv2.waitKey(25) & 0xFF == ord('q')):
+                    break
+        else:
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+        print('[' + str(i) + '/' + str(len(keypoints_vec)) + ']')
+
+    cap.release()
+    if save_video:
+        vid_writer.release()
+    cv2.destroyAllWindows()
+
 def visualizeColoredVideo(video_name, file_name, thickness=3, joint_names = [-1]):
     if(video_name == "None"):
         print("No video found")

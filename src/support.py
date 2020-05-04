@@ -11,12 +11,12 @@ from PyQt5.QtWidgets import QApplication
 from parameters import *
 from kinematics import inverseKinematicsRowing
 
-def saveDATAtoFile(file_path, file_metadata, keypoints_vec, angles_vec=[]):
-    writeToDATA(file_path, file_metadata, write_mode='w')
-    for i in range(len(keypoints_vec)):
-        pose_keypoints = keypoints_vec[i]
+def saveDATAtoFile(file_path, file_data):
+    writeToDATA(file_path, file_data["metadata"], write_mode='w')
+    for i in range(len(file_data["keypoints"])):
+        pose_keypoints = file_data["keypoints"]
         try:
-            angles = angles_vec[i]
+            angles = file_data["angles"][i]
         except:
             angles = []
         file_data = {
@@ -275,18 +275,17 @@ def parse_data_file(file_path):
             if i==0:
                 metadata = json.loads(line)
             else:
-                data = json.loads(line)
-                keypoints_vec.append(data["keypoints"])
+                data_line = json.loads(line)
+                keypoints_vec.append(data_line["keypoints"])
                 try:
-                    angles_vec.append(data["angles"])
+                    angles_vec.append(data_line["angles"])
                 except:
-                    try:
-                        data["angles"] = inverseKinematicsRowing(data["keypoints"])
-                    except Exception as e:
-                        data["angles"] = []
-                        print("Could not get angles")
-    data["keypoints"] = np.array(data["keypoints"]).astype(float)
-    data["angles"] = np.array(data["angles"]).astype(float)
+                    angles = []
+    data = {}
+    data["keypoints"] = np.array(keypoints_vec).astype(float)
+    data["angles"]  = np.array(angles_vec).astype(float)
+    data["metadata"] = metadata
+    var_names = ["metadata", "keypoints", "angles"]
     return data, metadata
 
 def readAllFramesDATA(file_path):
