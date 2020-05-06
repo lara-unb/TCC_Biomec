@@ -59,6 +59,6 @@ Teste pós processamento pela openpose.
 - At the end of the execution, two files will be generated, one of video and one of data in the selected folder.
 
 
--The default processing is an interpolation followed by a kalman filter, applied to each joint position coordinate axis individually.
+- The default processing is an interpolation followed by a kalman filter, applied to each joint position coordinate axis individually.
 
 
