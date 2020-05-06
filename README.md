@@ -39,23 +39,22 @@ Then, using those joint coordinates acquired, angles are deduced:
 
 
 # Test post-processing by openpose.
-Teste pós processamento pela openpose. 
 
-- Primeiro passo é clonar essa pasta do git com os seguintes comandos. 
+
 - First step is to clone this folder fron git with the following commands. 
 
 	git clone https://github.com/lara-unb/ema_motion_analysis.git
 
-- Para rodar o código é necessário ter todas as dependencias instaladas, para isso deve-se usar os comandos listados em 'Dependencies' ou seguir o indicado nos links correspondentes.
+
 - To run the code it is necessary to have all the dependencies installed, for that you must use the commands listed in 'Dependencies' or follow the one indicated in the corresponding links.
 
-- Para processar os dados, execute dentro da pasta script o código process_data (esse passo pode ser feito da forma que ficar mais confortável, a intenção é apenas executar o programa).  
+
 - To process the data, access the script folder and run the process_data code (this step can be done in the way that is most comfortable, the intention is just to run the program).
 
-- Ao executar esse código, será solicitado o arquivo de dados (.data) e você deve indicar o caminho da pasta exemplos e selecionar o arquivo rowing.data, em seguida será solicitado o arquivo de vídeo também localizado na pasta exemplo e com o nome rowing. Por ultimo será solicitado a pasta onde o arquivo processado será salvo e também o nome do arquivo gerado.
+
 - When executing this code, you will be asked for the data file (.data) and you must indicate the path of the examples folder and select the file rowing.data, then you will be asked for the video file also located in the example folder and with the name rowing . Finally, you will be asked for the folder where the processed file will be saved and also the name of the generated file.
 
-- Ao finalizar a execução, será gerados dois arquivos, um de vídeo e um de dados na pasta selecionada.
+
 - At the end of the execution, two files will be generated, one of video and one of data in the selected folder.
 
 
