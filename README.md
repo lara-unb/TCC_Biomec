@@ -43,7 +43,7 @@ Then, using those joint coordinates acquired, angles are deduced:
 
 - First step is to clone this folder fron git with the following commands. 
 
-	git clone https://github.com/lara-unb/ema_motion_analysis.git
+		git clone https://github.com/lara-unb/ema_motion_analysis.git
 
 
 - To run the code it is necessary to have all the dependencies installed, for that you must use the commands listed in 'Dependencies' or follow the one indicated in the corresponding links.
