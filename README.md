@@ -33,31 +33,16 @@ Then, using those joint coordinates acquired, angles are deduced:
 - ([Scipy 1.4.1](https://pypi.org/project/scipy/)) (pip install opencv-python)
 
 # Testing
-
-- A file structure named .DATA was created to store and manipulate keypoints and angles extracted, it based on JSON and therefor readable.
-- To get a .DATA file from a video using the Openpose Python API, run the script pyopenpose_save_data.py and select the video of interest. In the file, define the saggittal plane of the rowing position (SL: Saggittal Left, SR: Saggittal Rigth).
-
-
-# Test post-processing by openpose.
-
-
-- First step is to clone this folder fron git with the following commands. 
+- First step is to clone this folder from github with the following command. 
 
 		git clone https://github.com/lara-unb/ema_motion_analysis.git
+		
+- To run the code it is necessary to have all the dependencies installed, for that you can use the commands listed in 'Dependencies' or follow the source website in the corresponding links.
 
+- A file structure named .data was created to store and manipulate keypoints and angles extracted, it based on JSON and, therefor, readable.
 
-- To run the code it is necessary to have all the dependencies installed, for that you must use the commands listed in 'Dependencies' or follow the one indicated in the corresponding links.
+- To get a .data file from a video using the Openpose Python API, access the file pyopenpose_save_data.py on the script folder. In the file, define the saggittal plane of the rowing position (SL: Saggittal Left, SR: Saggittal Rigth). Then, after running the code, you will be asked to select the video of interest.
 
-
-- To process the data, access the script folder and run the process_data code (this step can be done in the way that is most comfortable, the intention is just to run the program).
-
-
-- When executing this code, you will be asked for the data file (.data) and you must indicate the path of the examples folder and select the file rowing.data, then you will be asked for the video file also located in the example folder and with the name rowing . Finally, you will be asked for the folder where the processed file will be saved and also the name of the generated file.
-
-
-- At the end of the execution, two files will be generated, one of video and one of data in the selected folder.
-
+- To process the data, access the script folder and run the process_data.py. When executing this code, you will be asked first for the data file (.data) and then for the video file. Finally, you will be asked for the folder where the processed file will be saved and also the name of the generated files (without any extension). At the end of the execution, two files will be generated, one of video and one of data in the selected folder.
 
 - The default processing is an interpolation followed by a kalman filter, applied to each joint position coordinate axis individually.
-
-
