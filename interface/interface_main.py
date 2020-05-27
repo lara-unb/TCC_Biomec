@@ -150,7 +150,7 @@ class MainWindow_EXEC():
             self.out_pos_time = data['pos_time']
             self.time_vid = self.out_pos_time[self.frame_n]
             self.fps = int(1/np.mean(np.diff(self.out_pos_time)))
-    
+        
     def on_feat_path_changed(self):
         if self.ui.feat_path.text() != "":
             data, self.feat_names = parse_out_file(self.ui.feat_path.text())

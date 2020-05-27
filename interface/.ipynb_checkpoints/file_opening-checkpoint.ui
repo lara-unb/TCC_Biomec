@@ -100,8 +100,8 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset resource="resources.qrc">
-            <normaloff>:/icons/browse.png</normaloff>:/icons/browse.png</iconset>
+           <iconset>
+            <normaloff>../../Artigo_remo/ema_fes_rowing_experiments/icons/browse.png</normaloff>../../Artigo_remo/ema_fes_rowing_experiments/icons/browse.png</iconset>
           </property>
          </widget>
         </item>
@@ -115,8 +115,8 @@
            <string>Add File</string>
           </property>
           <property name="icon">
-           <iconset resource="resources.qrc">
-            <normaloff>:/icons/plus.png</normaloff>:/icons/plus.png</iconset>
+           <iconset>
+            <normaloff>../../Artigo_remo/ema_fes_rowing_experiments/icons/plus.png</normaloff>../../Artigo_remo/ema_fes_rowing_experiments/icons/plus.png</iconset>
           </property>
          </widget>
         </item>
@@ -126,8 +126,8 @@
            <string>Remove File</string>
           </property>
           <property name="icon">
-           <iconset resource="resources.qrc">
-            <normaloff>:/icons/minus.png</normaloff>:/icons/minus.png</iconset>
+           <iconset>
+            <normaloff>../../Artigo_remo/ema_fes_rowing_experiments/icons/minus.png</normaloff>../../Artigo_remo/ema_fes_rowing_experiments/icons/minus.png</iconset>
           </property>
          </widget>
         </item>
@@ -250,8 +250,8 @@
            <string>Select Data</string>
           </property>
           <property name="icon">
-           <iconset resource="resources.qrc">
-            <normaloff>:/icons/plus.png</normaloff>:/icons/plus.png</iconset>
+           <iconset>
+            <normaloff>../../Artigo_remo/ema_fes_rowing_experiments/icons/plus.png</normaloff>../../Artigo_remo/ema_fes_rowing_experiments/icons/plus.png</iconset>
           </property>
          </widget>
         </item>
@@ -338,8 +338,8 @@
            <string>Remove Data</string>
           </property>
           <property name="icon">
-           <iconset resource="resources.qrc">
-            <normaloff>:/icons/minus.png</normaloff>:/icons/minus.png</iconset>
+           <iconset>
+            <normaloff>../../Artigo_remo/ema_fes_rowing_experiments/icons/minus.png</normaloff>../../Artigo_remo/ema_fes_rowing_experiments/icons/minus.png</iconset>
           </property>
          </widget>
         </item>
@@ -361,8 +361,6 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources>
-  <include location="resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

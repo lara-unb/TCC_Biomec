@@ -5,11 +5,32 @@ import json
 import math
 import sys
 import os
+import pickle
 from PyQt5 import QtGui
 from PyQt5.QtWidgets import QWidget, QFileDialog
 from PyQt5.QtWidgets import QApplication
 from parameters import *
 from kinematics import inverseKinematicsRowing
+import importlib
+
+def save_to_file(data_dic, file_path):
+    with open(file_path, 'wb') as f:
+        for key in data_dic.keys():
+            pickle.dump(key, f)
+            pickle.dump(data_dic[key], f)
+
+def function_from_file(file_path, function_name):
+    folder_path = ""
+    for string in file_path.split("/")[:-1]:
+        folder_path += string + "/"
+    file_name = file_path.split("/")[-1].split(".")[0]
+    if folder_path not in sys.path:
+        sys.path.append(folder_path)
+    processing = __import__(file_name)
+    importlib.reload(sys.modules[file_name])
+    processing = __import__(file_name)
+    processing_function = getattr(processing, function_name)
+    return processing_function
 
 def saveDATAtoFile(file_path, data):
     writeToDATA(file_path, data["metadata"], write_mode='w')
@@ -286,7 +307,7 @@ def parse_data_file(file_path):
     data["angles"]  = np.array(angles_vec).astype(float)
     data["metadata"] = metadata
     var_names = ["metadata", "keypoints", "angles"]
-    return data, metadata
+    return data, var_names
 
 def readAllFramesDATA(file_path):
     keypoints_vec = []
