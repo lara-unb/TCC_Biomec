@@ -24,16 +24,25 @@ Then, using those joint coordinates acquired, angles are deduced:
 
 # Dependencies
 
-- Numpy (pip install numpy)
-- Matplotlib (pip install matplotlib)
-- Opencv (pip install opencv-python)
-- Pykalman (pip install pykalman)
-- PyQt5 (pip install PyQt5)
+- ([Numpy 1.18.4](https://pypi.org/project/numpy/)) (pip install numpy)
+- ([Matplotlib 3.2.1](https://pypi.org/project/matplotlib/)) (pip install matplotlib)
+- ([Opencv 4.2.0.34](https://pypi.org/project/opencv-python)) (pip install opencv-python)
+- ([Pykalman 0.9.5](https://pypi.org/project/pykalman/))(pip install pykalman)
+- ([PyQt5 5.14.2](https://pypi.org/project/PyQt5/)) (pip install PyQt5)
 - Openpose (see [github](https://github.com/CMU-Perceptual-Computing-Lab/openpose))
+- ([Scipy 1.4.1](https://pypi.org/project/scipy/)) (pip install opencv-python)
 
 # Testing
+- First step is to clone this folder from github with the following command. 
 
-- A file structure named .DATA was created to store and manipulate keypoints and angles extracted, it based on JSON and therefor readable.
-- To get a .DATA file from a video using the Openpose Python API, run the script pyopenpose_save_data.py and select the video of interest. In the file, define the saggittal plane of the rowing position (SL: Saggittal Left, SR: Saggittal Rigth).
-- To process the data run the script process_data.py and select the .DATA file, the video used to generate the .DATA file, and their respective output destinations. The default processing is an interpolation followed by a kalman filter, applied to each joint position coordinate axis individually.
-- A video and .DATA example is provided under the examples folder.
+		git clone https://github.com/lara-unb/ema_motion_analysis.git
+		
+- To run the code it is necessary to have all the dependencies installed, for that you can use the commands listed in 'Dependencies' or follow the source website in the corresponding links.
+
+- A file structure named .data was created to store and manipulate keypoints and angles extracted, it based on JSON and, therefor, readable.
+
+- To get a .data file from a video using the Openpose Python API, access the file pyopenpose_save_data.py on the script folder. In the file, define the saggittal plane of the rowing position (SL: Saggittal Left, SR: Saggittal Rigth). Then, after running the code, you will be asked to select the video of interest.
+
+- To process the data, access the script folder and run the process_data.py. When executing this code, you will be asked first for the data file (.data) and then for the video file. Finally, you will be asked for the folder where the processed file will be saved and also the name of the generated files (without any extension). At the end of the execution, two files will be generated, one of video and one of data in the selected folder.
+
+- The default processing is an interpolation followed by a kalman filter, applied to each joint position coordinate axis individually.
