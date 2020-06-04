@@ -31,7 +31,7 @@ def getCoord(pixel_ji, f_height, mmppx=1, mmppy=1):
 
 def getKeypointsPixels(keypoints_xy, f_height, mmppx=1, mmppy=1):
     keypoints_ji = np.zeros(keypoints_xy.shape)
-    for i in range(len(keypoints)):
+    for i in range(len(keypoints_ji)):
         keypoints_ji[i] = list(getPixel(keypoints_xy[i], f_height, mmppx, mmppy))
     return keypoints_ji
 

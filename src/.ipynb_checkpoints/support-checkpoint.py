@@ -327,7 +327,7 @@ def readAllFramesDATA(file_path):
     angles_vec = np.array(angles_vec).astype(float)
     return metadata, keypoints_vec, angles_vec
 
-def getFrame(video_name, n, allvid=False, input_path=False):
+def getFrame(video_name, n, input_path=False, allvid=False):
     if input_path:
         input_source = video_name
     else:

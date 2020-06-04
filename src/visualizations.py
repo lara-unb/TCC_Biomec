@@ -12,7 +12,7 @@ colors_t = [(0,255,0), (0,0,255), (0,0,0), (255,255,255)]
 colors_2 = [[0,255,0], [255,0,0], [0,0,255], [0,255,255],[255,255,0], 
          [255,0,255], [0,255,0], [255,200,100], [200,255,100],
          [100,255,200], [255,100,200], [100,200,255], [200,100,255],
-         [200,200,0], [200,0,200],[0,200,200]]
+         [200,200,0], [200,0,200],[0,200,200], [0,0,0]]
 
 data_dir = "/home/victormacedo10/0.TCC/TCC_Biomec/Data/"
 videos_dir = "/home/victormacedo10/0.TCC/TCC_Biomec/Videos/"
@@ -125,13 +125,26 @@ def visualizeColoredVideo(video_name, file_name, thickness=3, joint_names = [-1]
     showFrame(frame)
     return frame
 
-def keypointsDATAtoFrame(image, keypoints, thickness=3, color = -1):
-    for i in range(len(keypoints)):
-        A = tuple(keypoints[i].astype(int))
-        if (-1 in A) or (0 in A):
+def keypointsDATAtoFrame(image, keypoints, joint_names, joints_pairs, t_circle=3, t_line=1, color_circle = [255,0,0], color_line=[0,0,0]):
+    frame_out = np.copy(image)
+    for (joint_A, joint_B) in joints_pairs:
+        idx_A = joint_names.index(joint_A)
+        kp_A = keypoints[idx_A].astype(int)
+        idx_B = joint_names.index(joint_B)
+        kp_B = keypoints[idx_B].astype(int)
+        if ((-1 in kp_A) or (0 in kp_A)) and ((-1 in kp_B) or (0 in kp_B)): # no A and no B
             continue
-        cv2.circle(image, (A[0], A[1]), thickness, colors_2[i], -1)
-    return image
+        elif ((-1 in kp_A) or (0 in kp_A)) and (not((-1 in kp_B) or (0 in kp_B))): # mo A and B
+            cv2.circle(frame_out, (kp_B[0], kp_B[1]), t_circle, color_circle, -1)
+            continue
+        elif (not((-1 in kp_A) or (0 in kp_A))) and ((-1 in kp_B) or (0 in kp_B)): # A and no B
+            cv2.circle(frame_out, (kp_A[0], kp_A[1]), t_circle, color_circle, -1)
+            continue
+        else: # A and B
+            cv2.line(frame_out, (kp_A[0], kp_A[1]), (kp_B[0], kp_B[1]), color_line, t_line, cv2.LINE_AA)
+            cv2.circle(frame_out, (kp_A[0], kp_A[1]), t_circle, color_circle, -1)
+            cv2.circle(frame_out, (kp_B[0], kp_B[1]), t_circle, color_circle, -1)
+    return frame_out
 
 def visualizePoints(keypoints_list, personwise_keypoints, person, joint_n):
     index = int(personwise_keypoints[person][joint_n])
