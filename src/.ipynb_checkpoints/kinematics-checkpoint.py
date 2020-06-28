@@ -63,15 +63,23 @@ def getAngle(A, B, O):
     angle = int(math.atan((y1-y2)/(x2-x1))*180/math.pi)
     return angle
 
-def getAngleLimited(A, B, O):
-    try:
-        ang = math.degrees(math.atan2(B[1]-O[1], B[0]-O[0]) - math.atan2(A[1]-O[1], A[0]-O[0]))
-        if ang < 0:
-            ang += 360
-        if ang > 180:
-            ang = 360 - ang
-    except:
-        ang = 0
+def getAngleLimited(A, B, O, allow_neg=False):
+    if allow_neg:
+        try:
+            ang = math.degrees(math.atan2(B[1]-O[1], B[0]-O[0]) - math.atan2(A[1]-O[1], A[0]-O[0]))
+            if ang > 180:
+                ang = 360 - ang
+        except:
+            ang = np.nan
+    else:
+        try:
+            ang = math.degrees(math.atan2(B[1]-O[1], B[0]-O[0]) - math.atan2(A[1]-O[1], A[0]-O[0]))
+            if ang < 0:
+                ang += 360
+            if ang > 180:
+                ang = 360 - ang
+        except:
+            ang = np.nan
     return ang
 
 def drawAngle(img, O, angle, thickness=10, textsize=1):
@@ -155,10 +163,10 @@ def inverseKinematicsRowing(keypoints):
         if (0 in kp) or (-1 in kp): 
             angles[i] = np.nan
         else:
-            angles[i] = getAngleLimited(A, B, O)
             if i==3:
-                if A[0] > B[0]:
-                    angles[i] = -angles[i]
+                angles[i] = -getAngleLimited(A, B, O, allow_neg=True)
+            else:
+                angles[i] = getAngleLimited(A, B, O)
     return angles
 
 def fowardKinematicsRowing(root_xy, angles, distances, orientation = "Sagittal Left"):

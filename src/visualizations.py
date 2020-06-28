@@ -17,6 +17,45 @@ colors_2 = [[0,255,0], [255,0,0], [0,0,255], [0,255,255],[255,255,0],
 data_dir = "/home/victormacedo10/0.TCC/TCC_Biomec/Data/"
 videos_dir = "/home/victormacedo10/0.TCC/TCC_Biomec/Videos/"
 
+def keypointsToVideoCrop(video_path, file_metadata, keypoints_vec, video_out_path=None, starting_frame=0):
+    
+    frame_width, frame_height, fps = file_metadata["frame_width"], file_metadata["frame_height"], file_metadata["fps"]
+    keypoints_names, keypoints_pairs = file_metadata["keypoints_names"], file_metadata["keypoints_pairs"]
+    cap = cv2.VideoCapture(video_path)
+
+    fourcc = cv2.VideoWriter_fourcc(*'X264')
+    vid_writer = cv2.VideoWriter(video_out_path, fourcc, fps, (frame_width,frame_height))
+
+    if(cap.isOpened() == False):
+        print("Error opening video stream or file")
+
+    print(f"Starting Frame: {starting_frame} - Kp Length: {len(keypoints_vec)}")
+    cap.set(cv2.CAP_PROP_POS_FRAMES, starting_frame)
+    
+    for i in range(len(keypoints_vec)):
+        # Process Image
+        ret, imageToProcess = cap.read()
+        if not ret:
+            break
+
+        # Start timer
+        timer = cv2.getTickCount()
+
+        pose_keypoints = keypoints_vec[i]
+
+
+        img_out = poseDATAtoFrame(imageToProcess, pose_keypoints, 0, keypoints_names, keypoints_pairs, 
+                                    thickness=3, color = -1)
+
+        vid_writer.write(img_out)
+
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+        print('[' + str(i) + '/' + str(len(keypoints_vec)-1) + ']', end='\r')
+
+    cap.release()
+    vid_writer.release()
+    cv2.destroyAllWindows()
 
 def keypointsToVideo(video_path, file_metadata, keypoints_vec, video_out_path=None, 
                     save_video=True, show_video=True, show_frame=False):
@@ -68,7 +107,7 @@ def keypointsToVideo(video_path, file_metadata, keypoints_vec, video_out_path=No
         else:
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
-        print('[' + str(i) + '/' + str(len(keypoints_vec)) + ']')
+        print('[' + str(i) + '/' + str(len(keypoints_vec)-1) + ']', end='\r')
 
     cap.release()
     if save_video:

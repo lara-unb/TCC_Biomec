@@ -68,7 +68,7 @@ def keypointsToVideo(video_path, file_metadata, keypoints_vec, video_out_path=No
         else:
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
-        print('[' + str(i) + '/' + str(len(keypoints_vec)) + ']')
+        print('[' + str(i) + '/' + str(len(keypoints_vec)-1) + ']', end='\r')
 
     cap.release()
     if save_video:
